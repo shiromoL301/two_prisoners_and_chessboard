@@ -39,7 +39,8 @@ class TwoPrisonersAndChessboard:
                 self.text.game_title,
                 layout,
                 size=(self.window_width, self.window_height),
-                background_color=self.gui_theme.color_theme.background_color
+                background_color=self.gui_theme.color_theme.background_color,
+                resizable=True
             )
 
     @property
