@@ -87,6 +87,17 @@ class ColorTheme:
             text_color         = Color.black,
             accent_color       = Color.crimson
         )
+        
+    @classmethod
+    def black_green(self) -> ColorTheme:
+        return ColorTheme(
+            background_color   = Color.darkseagreen,
+            square_light_color = Color.wakatake,
+            square_dark_color  = Color.blackstone,
+            title_color        = Color.blackstone,
+            text_color         = Color.jet_black,
+            accent_color       = Color.crimson 
+        )
 
 
 class FontTheme:

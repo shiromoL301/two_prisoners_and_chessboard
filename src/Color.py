@@ -6,6 +6,16 @@ class Color:
     
     @classmethod
     @property
+    def blackstone(self) -> str:
+        return '#1f1e1c'
+    
+    @classmethod
+    @property
+    def cobalt_green(self) -> str:
+        return '#40BA8D'
+    
+    @classmethod
+    @property
     def coral(self) -> str:
         return '#ff7f50'
     
@@ -26,8 +36,23 @@ class Color:
     
     @classmethod
     @property
+    def duck_blue(self) -> str:
+        return '#005E7E'
+    
+    @classmethod
+    @property
+    def emerald_green(self) -> str:
+        return '#00A968'
+    
+    @classmethod
+    @property
     def gray(self) -> str:
         return '#808080'
+    
+    @classmethod
+    @property
+    def jet_black(self) -> str:
+        return '#1e1e1e'
 
     @classmethod
     @property
@@ -52,7 +77,7 @@ class Color:
     @classmethod
     @property
     def lightskyblue(self) -> str:
-        return '#B9D6E8'
+        return '#B9D6E8' 
     
     @classmethod
     @property
@@ -88,6 +113,21 @@ class Color:
     @property
     def steelblue(self) -> str:
         return '#4790C0'
+    
+    @classmethod
+    @property
+    def teal_blue(self) -> str:
+        return '#004864'
+    
+    @classmethod
+    @property
+    def teal_green(self) -> str:
+        return '#006956'
+
+    @classmethod
+    @property
+    def wakatake(self) -> str:
+        return '#68be8d'
     
     @classmethod
     @property
