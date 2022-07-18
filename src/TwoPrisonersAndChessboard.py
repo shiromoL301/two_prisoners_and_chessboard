@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 
 from functools import cached_property
+import logging
 import random
 from typing import Any, Generator
 
@@ -240,23 +241,38 @@ class TwoPrisonersAndChessboard:
             bool: 秘密値が正当であるか
         """
         return isinstance(self.secret, int) and (1 <= self.secret <= self.ncells)
+    
+    def log_parity_check_calc(self, secret_binary: tuple[int], parities: tuple[int], flipping_binary: tuple[int]) -> None:
+        """パリティ検査の結果のログを取る"""
+        buffer = [
+            f"{self.text.secret_binary} {secret_binary}",
+            f"{self.text.board_parities} {parities}",
+            f"{self.text.result_of_xor} {flipping_binary}"
+        ]
+        logging.info('\n'.join(buffer))
 
     def log_phase_jailer(self) -> None:
         """看守の操作のログを取る"""
-        print(self.text.board_from_jailer)
-        print(*(self.board_as_ints()), sep='\n')
-        print(self.text.number_from_jailer, self.secret)
+        buffer = [
+            self.text.board_from_jailer,
+            '\n'.join(map(str, (self.board_as_ints()))),
+            f'{self.text.number_from_jailer} {self.secret}'
+        ]
+        logging.info('\n'.join(buffer))
 
     def log_phase_prisoner1(self) -> None:
         """囚人1の操作のログを取る"""
-        print(self.text.flipped_cell(self.flipped))
-        print(self.text.board_after_flipped)
-        print(*(self.board_as_ints()), sep='\n')
+        buffer = [
+            self.text.flipped_cell(self.flipped),
+            self.text.board_after_flipped,
+            '\n'.join(map(str, self.board_as_ints()))
+        ]
+        logging.info('\n'.join(buffer))
 
     def log_phase_prisoner2(self) -> None:
         """囚人2の操作のログを取る"""
-        print(self.text.number_from_prisoner2, self.answer)
-        print(self.text.result(self.winner))
+        logging.info(f"{self.text.number_from_prisoner2} {self.answer}")
+        logging.info(self.text.result(self.winner))
 
     def render_board(self) -> None:
         """盤面を描画する"""
@@ -366,17 +382,15 @@ class TwoPrisonersAndChessboard:
             self.window[Key.INSTRUCTION].update(value=self.text.prisoner1_instruction)
             self.window[Key.WARNING].update(value=self.text.display_jailer_secret(self.secret), visible=True)
         else:
-            secret_binary = int2nary(self.secret%self.ncells, 2, length=self.ncols)
-            parity = parity_check(self.board)
-            parities = int2nary(parity, 2, length=self.ncols)
+            secret_binary   = int2nary(self.secret % self.ncells, 2, length=self.ncols)
+            parity          = parity_check(self.board)
+            parities        = int2nary(parity, 2, length=self.ncols)
             flipping_binary = xor(secret_binary, parities)
-            flipping_label = nary2int(flipping_binary, 2)
-            self.flipped = int2nary(flipping_label, self.ncols, length=2)
+            flipping_label  = nary2int(flipping_binary, 2)
+            self.flipped    = int2nary(flipping_label, self.ncols, length=2)
             self.flip_cell_at(self.flipped)
 
-            print(self.text.secret_binary, secret_binary)
-            print(self.text.board_parities, parities)
-            print(self.text.result_of_xor, flipping_binary)
+            self.log_parity_check_calc(secret_binary, parities, flipping_binary)
             self.log_phase_prisoner1()
             self.window[Key.INSTRUCTION].update(value=self.text.prisoner1_log)
             self.window[Key.SUBMIT].update(text=self.text.next, visible=True)

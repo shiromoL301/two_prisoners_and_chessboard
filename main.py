@@ -1,7 +1,11 @@
+import logging
+
 from src.TwoPrisonersAndChessboard import TwoPrisonersAndChessboard
-from config import LANGUAGE, LEVEL, TITLE_TYPE, THEME
+from config import LANGUAGE, LEVEL, TITLE_TYPE, THEME, LOG_FILE_PATH, LOG_FORMAT
 
 def main():
+    logging.basicConfig(filename=LOG_FILE_PATH, filemode='w', level=logging.DEBUG, format=LOG_FORMAT)
+
     two_prisoners_and_chessboard = TwoPrisonersAndChessboard(
             level=LEVEL,
             gui_theme=THEME,
