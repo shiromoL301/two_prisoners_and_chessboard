@@ -34,14 +34,17 @@ class TwoPrisonersAndChessboard:
         self.answer : int = -1
         self.winner : str = ""
 
-        layout: list[list[sg.Element]] = self.build_main_layout()
+        layout: list[list[sg.Element]] = self.build_main_layout(scrollable=level > 4)
         self.window = sg.Window(
                 self.text.game_title,
                 layout,
                 size=(self.window_width, self.window_height),
                 background_color=self.gui_theme.color_theme.background_color,
+                location=(0, 28),
                 resizable=True
-            )
+            ).Finalize()
+        if self.level > 4:
+            self.window.Maximize()
 
     @property
     def base_height(self) -> int:
@@ -66,12 +69,12 @@ class TwoPrisonersAndChessboard:
     @property
     def window_height(self) -> int:
         """ウィンドウの立幅．Read Only."""
-        return max(self.minimum_height, self.square_size * self.ncols + self.base_height)
+        return max(self.minimum_height, self.square_size * self.ncols + self.base_height) if self.level <= 4 else 1052
 
     @property
     def window_width(self) -> int:
         """ウィンドウの横幅．Read Only."""
-        return self.square_size * self.nrows + self.base_width
+        return self.square_size * self.nrows + self.base_width if self.level <= 4 else 1920
 
     @property
     def level(self) -> int:
@@ -118,23 +121,32 @@ class TwoPrisonersAndChessboard:
         """
         return list(map(lambda row: [*map(int, row)], self.board))
 
-    def build_main_layout(self) -> list[list[sg.Element]]:
+    def build_main_layout(self, scrollable: bool=False) -> list[list[sg.Element]]:
         """メインレイアウトのビルド
 
         Returns:
             list[list[sg.Element]]: メインレイアウト
         """
-        return [
-            [
-                sg.Text(
-                    self.text.game_title,
-                    font=(self.gui_theme.font_theme.title_font, 18),
-                    text_color=self.gui_theme.color_theme.title_color,
-                    background_color=self.gui_theme.color_theme.background_color
-                )
-            ],
-            [sg.Column(self.generate_board_layout()), sg.Column(self.menu_layout(), background_color=self.gui_theme.color_theme.background_color)]
+        title_element = sg.Text(
+                self.text.game_title,
+                font=(self.gui_theme.font_theme.title_font, 18),
+                text_color=self.gui_theme.color_theme.title_color,
+                background_color=self.gui_theme.color_theme.background_color
+            )
+        body_module = [
+            sg.Column(
+                self.generate_board_layout(),
+                expand_y=True,
+                scrollable=True,
+                vertical_scroll_only=False
+            ),
+            sg.Column(
+                self.menu_layout(), background_color=self.gui_theme.color_theme.background_color
+            )
+        ] if scrollable else [
+            sg.Column(self.generate_board_layout()), sg.Column(self.menu_layout(), background_color=self.gui_theme.color_theme.background_color)
         ]
+        return [[title_element],body_module]
 
     def build_random_board(self) -> None:
         """ランダムな盤面のビルド"""
