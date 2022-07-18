@@ -127,16 +127,3 @@ curl -L https://nixos.org/nix/install | sh
 source ~/.bashrc
 nix-env -iA nixpkgs.nixFlakes
 ```
-
-### Nixを用いたLaTeXファイルのビルド方法
-
-以下のコマンドでLaTeXをビルドすることができる環境に入ることができます:
-```
-nix develop path:$PWD
-```
-(この操作は最初にLaTeX環境を作成するため、**初回はかなり時間が掛かります**。)
-
-以下のコマンドで、`main.tex`ファイルがビルドされ、`result`フォルダ内に`main.pdf`ファイルが出力されます。
-```
-nix build path:$PWD
-```
