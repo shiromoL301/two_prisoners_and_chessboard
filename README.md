@@ -1,4 +1,4 @@
-# two_prisoners_and_chess_board
+# two_prisoners_and_chessboard
 
 2人の囚人とチェス盤問題のシミュレーション
 
