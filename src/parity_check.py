@@ -23,5 +23,6 @@ def hamming_syndrome(bits: list[int]) -> int:
     """
     return reduce(
         lambda x, y: x ^ y,
-        [idx for (idx, bit) in enumerate(bits) if bit]
+        [idx for (idx, bit) in enumerate(bits) if bit],
+        0
     )
