@@ -22,6 +22,24 @@ python main.py
 基本的にはGUIに表示される指示に従うだけです。
 `config.py`に設定を記述して、言語やテーマを変更することができます。
 
+## WSLでの実行時に日本語表記で文字化けが起こる場合
+
+以下のように対処してください:
+
+1. パッケージの更新
+```
+sudo apt update && sudo apt upgrade
+```
+2. IPAフォントのインストール
+```
+sudo apt install fonts-ipafont
+```
+3. ロケールを変更して再起動
+```
+sudo apt install language-pack-ja
+sudo update-locale LANG=ja_JP.utf8
+```
+
 ## Nixを用いた環境構築
 
 Windowsを使っている方は、まずWSLを導入します。
