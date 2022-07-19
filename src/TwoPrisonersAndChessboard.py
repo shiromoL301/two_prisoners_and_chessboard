@@ -15,35 +15,37 @@ from .utils import int2nary, nary2int, xor
 
 class TwoPrisonersAndChessboard:
     def __init__(
-            self,
-            level: int,
-            gui_theme: GuiTheme = GuiTheme(ColorTheme.reddit(), FontTheme.arial()),
-            language: Lang=Lang.JA,
-            players_name: PlayersName=PlayersName.JAIL_PRISON
-        ):
+        self,
+        level: int,
+        gui_theme: GuiTheme = GuiTheme(ColorTheme.reddit(), FontTheme.arial()),
+        language: Lang = Lang.JA,
+        players_name: PlayersName = PlayersName.JAIL_PRISON
+    ):
         if level < 1:
             raise ValueError("The Level of the game must be at least 1!!")
-        self.text   : GuideText = GuideText(language, players_name)
-        self.__level: int       = level
+        self.text: GuideText = GuideText(language, players_name)
+        self.__level: int = level
         self.__gui_theme: GuiTheme = gui_theme
 
-        self.board: list[list[Cell]] = [[Blank() for _ in range(self.ncols)] for _ in range(self.nrows)]
+        self.board: list[list[Cell]] = [[Blank() for _ in range(self.ncols)]
+                                        for _ in range(self.nrows)]
         self.phase: Player = Player.JAILER
 
         self.flipped: tuple[int, int] = (-1, -1)
-        self.secret : int = -1
-        self.answer : int = -1
-        self.winner : str = ""
+        self.secret: int = -1
+        self.answer: int = -1
+        self.winner: str = ""
 
-        layout: list[list[sg.Element]] = self.build_main_layout(scrollable=level > 4)
+        layout: list[list[sg.Element]] = self.build_main_layout(
+            scrollable=level > 4)
         self.window = sg.Window(
-                self.text.game_title,
-                layout,
-                size=(self.window_width, self.window_height),
-                background_color=self.gui_theme.color_theme.background_color,
-                location=(0, 28),
-                resizable=True
-            ).Finalize()
+            self.text.game_title,
+            layout,
+            size=(self.window_width, self.window_height),
+            background_color=self.gui_theme.color_theme.background_color,
+            location=(0, 28),
+            resizable=True
+        ).Finalize()
         if self.level > 4:
             self.window.Maximize()
 
@@ -122,18 +124,18 @@ class TwoPrisonersAndChessboard:
         """
         return list(map(lambda row: [*map(int, row)], self.board))
 
-    def build_main_layout(self, scrollable: bool=False) -> list[list[sg.Element]]:
+    def build_main_layout(self, scrollable: bool = False) -> list[list[sg.Element]]:
         """メインレイアウトのビルド
 
         Returns:
             list[list[sg.Element]]: メインレイアウト
         """
         title_element = sg.Text(
-                self.text.game_title,
-                font=(self.gui_theme.font_theme.title_font, 18),
-                text_color=self.gui_theme.color_theme.title_color,
-                background_color=self.gui_theme.color_theme.background_color
-            )
+            self.text.game_title,
+            font=(self.gui_theme.font_theme.title_font, 18),
+            text_color=self.gui_theme.color_theme.title_color,
+            background_color=self.gui_theme.color_theme.background_color
+        )
         body_module = [
             sg.Column(
                 self.generate_board_layout(),
@@ -145,9 +147,10 @@ class TwoPrisonersAndChessboard:
                 self.menu_layout(), background_color=self.gui_theme.color_theme.background_color
             )
         ] if scrollable else [
-            sg.Column(self.generate_board_layout()), sg.Column(self.menu_layout(), background_color=self.gui_theme.color_theme.background_color)
+            sg.Column(self.generate_board_layout()), sg.Column(
+                self.menu_layout(), background_color=self.gui_theme.color_theme.background_color)
         ]
-        return [[title_element],body_module]
+        return [[title_element], body_module]
 
     def build_random_board(self) -> None:
         """ランダムな盤面のビルド"""
@@ -156,11 +159,13 @@ class TwoPrisonersAndChessboard:
 
     def activate_board(self) -> None:
         """盤面を有効化する"""
-        self.enable_elements(*[int2nary(i, self.ncols, length=2) for i in range(self.ncells)])
+        self.enable_elements(*[int2nary(i, self.ncols, length=2)
+                             for i in range(self.ncells)])
 
     def deactivate_board(self) -> None:
         """盤面を無効化する"""
-        self.disable_elements(*[int2nary(i, self.ncols, length=2) for i in range(self.ncells)])
+        self.disable_elements(*[int2nary(i, self.ncols, length=2)
+                              for i in range(self.ncells)])
 
     def disable_elements(self, *keys: tuple[Key]) -> None:
         """要素を無効化する
@@ -187,8 +192,10 @@ class TwoPrisonersAndChessboard:
             location: tuple[int, int]: 盤面の座標
         """
         i, j = location
-        self.board[i][j] = Pawn() if isinstance(self.board[i][j], Blank) else Blank()
-        self.window[location].update(image_filename=self.board[i][j].get_image_path())
+        self.board[i][j] = Pawn() if isinstance(
+            self.board[i][j], Blank) else Blank()
+        self.window[location].update(
+            image_filename=self.board[i][j].get_image_path())
 
     def generate_board_layout(self) -> list[list[sg.PySimpleGUI.ReadButton]]:
         """盤面レイアウトの生成
@@ -241,7 +248,7 @@ class TwoPrisonersAndChessboard:
             bool: 秘密値が正当であるか
         """
         return isinstance(self.secret, int) and (1 <= self.secret <= self.ncells)
-    
+
     def log_parity_check_calc(self, secret_binary: tuple[int], parities: tuple[int], flipping_binary: tuple[int]) -> None:
         """パリティ検査の結果のログを取る"""
         buffer = [
@@ -277,15 +284,16 @@ class TwoPrisonersAndChessboard:
     def render_board(self) -> None:
         """盤面を描画する"""
         for (i, j) in self.generate_cells_keys():
-            self.window[(i, j)].update(image_filename=self.board[i][j].get_image_path())
+            self.window[(i, j)].update(
+                image_filename=self.board[i][j].get_image_path())
 
     def render_text(
-            self,
-            text: str,
-            key: Any=None,
-            visible: bool=True,
-            is_accent: bool=False
-        ) -> sg.Text:
+        self,
+        text: str,
+        key: Any = None,
+        visible: bool = True,
+        is_accent: bool = False
+    ) -> sg.Text:
         """テキストのレンダリング
 
         Args:
@@ -320,9 +328,18 @@ class TwoPrisonersAndChessboard:
                 self.text.confirm_removal_pawn_at(location) if self.board[row-1][col-1]
                 else self.text.confirm_placement_pawn_at(location)
             )],
-            [sg.Button(self.text.yes, key=Key.YES), sg.Button(self.text.no, key=Key.NO)]
+            [sg.Button(self.text.yes, key=Key.YES),
+             sg.Button(self.text.no, key=Key.NO)]
         ]
-        sub_window = sg.Window(self.text.confirmation_screen, sub_layout, size=(300, 100))
+        sub_window_width, sub_window_height = 300, 100
+        sub_window_pos_x = (self.window_width // 2) - (sub_window_width // 2)
+        sub_window_pos_y = (self.window_height // 2) - (sub_window_height // 2)
+        sub_window = sg.Window(
+            self.text.confirmation_screen,
+            sub_layout,
+            size=(sub_window_width, sub_window_height),
+            location=(sub_window_pos_x, sub_window_pos_y)
+        )
 
         self.deactivate_board()
 
@@ -333,7 +350,8 @@ class TwoPrisonersAndChessboard:
                 case Key.YES:
                     self.flip_cell_at(location)
                     self.flipped = location
-                    self.window[Key.SUBMIT].update(text=self.text.next, visible=True)
+                    self.window[Key.SUBMIT].update(
+                        text=self.text.next, visible=True)
                     self.hide_elements(Key.WARNING)
                     self.log_phase_prisoner1()
                     break
@@ -349,22 +367,27 @@ class TwoPrisonersAndChessboard:
         Args:
             jailer_player: str: 看守のプレイヤー．self.text.player または self.text.cpu．
         """
-        self.disable_elements(Player.JAILER, Player.PRISONER1, Player.PRISONER2, Key.START)
+        self.disable_elements(
+            Player.JAILER, Player.PRISONER1, Player.PRISONER2, Key.START)
         self.activate_board()
         self.window[Key.PHASE].update(value=self.text.phase(self.phase))
-        self.window[Key.INSTRUCTION].update(value=self.text.jailer_instruction(self.ncells))
+        self.window[Key.INSTRUCTION].update(
+            value=self.text.jailer_instruction(self.ncells))
 
         match jailer_player:
             case self.text.player:
                 self.show_elements(Key.SECRET, Key.SUBMIT)
 
             case self.text.cpu:
-                self.window[Key.PHASE].update(value=self.text.phase(self.phase))
-                self.window[Key.SECRET].update(value=random.randint(1, self.ncells))
+                self.window[Key.PHASE].update(
+                    value=self.text.phase(self.phase))
+                self.window[Key.SECRET].update(
+                    value=random.randint(1, self.ncells))
                 self.build_random_board()
                 self.deactivate_board()
                 self.window[Key.INSTRUCTION].update(value=self.text.jailer_log)
-                self.window[Key.SUBMIT].update(text=self.text.next, visible=True)
+                self.window[Key.SUBMIT].update(
+                    text=self.text.next, visible=True)
 
     def run_prisoner1_phase(self, prisoner1_player: str) -> None:
         """囚人1のターンを実行する
@@ -379,18 +402,22 @@ class TwoPrisonersAndChessboard:
 
         if prisoner1_player == self.text.player:
             self.activate_board()
-            self.window[Key.INSTRUCTION].update(value=self.text.prisoner1_instruction)
-            self.window[Key.WARNING].update(value=self.text.display_jailer_secret(self.secret), visible=True)
+            self.window[Key.INSTRUCTION].update(
+                value=self.text.prisoner1_instruction)
+            self.window[Key.WARNING].update(
+                value=self.text.display_jailer_secret(self.secret), visible=True)
         else:
-            secret_binary   = int2nary(self.secret % self.ncells, 2, length=self.ncols)
-            parity          = parity_check(self.board)
-            parities        = int2nary(parity, 2, length=self.ncols)
+            secret_binary = int2nary(self.secret %
+                                     self.ncells, 2, length=self.ncols)
+            parity = parity_check(self.board)
+            parities = int2nary(parity, 2, length=self.ncols)
             flipping_binary = xor(secret_binary, parities)
-            flipping_label  = nary2int(flipping_binary, 2)
-            self.flipped    = int2nary(flipping_label, self.ncols, length=2)
+            flipping_label = nary2int(flipping_binary, 2)
+            self.flipped = int2nary(flipping_label, self.ncols, length=2)
             self.flip_cell_at(self.flipped)
 
-            self.log_parity_check_calc(secret_binary, parities, flipping_binary)
+            self.log_parity_check_calc(
+                secret_binary, parities, flipping_binary)
             self.log_phase_prisoner1()
             self.window[Key.INSTRUCTION].update(value=self.text.prisoner1_log)
             self.window[Key.SUBMIT].update(text=self.text.next, visible=True)
@@ -405,14 +432,17 @@ class TwoPrisonersAndChessboard:
         self.window[Key.PHASE].update(value=self.text.phase(self.phase))
         self.hide_elements(Key.SUBMIT, Key.WARNING)
         if prisoner2_player == self.text.player:
-            self.window[Key.INSTRUCTION].update(value=self.text.prisoner2_instruction)
+            self.window[Key.INSTRUCTION].update(
+                value=self.text.prisoner2_instruction)
             self.window[Key.SECRET].update(value=1, visible=True)
             self.window[Key.SUBMIT].update(text=self.text.ok, visible=True)
         else:
             self.answer = parity_check(self.board)
             self.answer = self.answer if self.answer else self.ncells
-            self.window[Key.INSTRUCTION].update(value=self.text.answer_by_prisoner2(self.answer))
-            self.window[Key.SUBMIT].update(text=self.text.confirm_result, visible=True)
+            self.window[Key.INSTRUCTION].update(
+                value=self.text.answer_by_prisoner2(self.answer))
+            self.window[Key.SUBMIT].update(
+                text=self.text.confirm_result, visible=True)
 
     def run_winner_judgement(self, values: dict[Any, Any]) -> None:
         """勝者判定を実行する
@@ -524,9 +554,11 @@ class TwoPrisonersAndChessboard:
                         case Player.JAILER:
                             self.secret = values[Key.SECRET]
                             if self.is_valid_secret():
-                                self.run_prisoner1_phase(values[Player.PRISONER1])
+                                self.run_prisoner1_phase(
+                                    values[Player.PRISONER1])
                             else:
-                                self.window[Key.WARNING].update(visible=True, value=self.text.validation(self.ncells))
+                                self.window[Key.WARNING].update(
+                                    visible=True, value=self.text.validation(self.ncells))
                         case Player.PRISONER1:
                             self.run_prisoner2_phase(values[Player.PRISONER2])
                         case Player.PRISONER2:
