@@ -1,5 +1,5 @@
 {
-  description = "Simulation of Two Prisoners and Chess Board Problem";
+  description = "Simulation of Two Prisoners and Chessboard Problem";
   inputs = {
     stable.url = "github:NixOS/nixpkgs/nixos-22.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
