@@ -367,8 +367,6 @@ class TwoPrisonersAndChessboard:
         Args:
             jailer_player: str: 看守のプレイヤー．self.text.player または self.text.cpu．
         """
-        self.disable_elements(
-            Player.JAILER, Player.PRISONER1, Player.PRISONER2, Key.START)
         self.activate_board()
         self.window[Key.PHASE].update(value=self.text.phase(self.phase))
         self.window[Key.INSTRUCTION].update(
@@ -508,7 +506,7 @@ class TwoPrisonersAndChessboard:
                     readonly=True
                 )
             ]
-        ], background_color=self.gui_theme.color_theme.background_color)
+        ], background_color=self.gui_theme.color_theme.background_color, key=Key.PLAYER_SETTINGS)
         
     def instruction_module(self) -> sg.Column:
         """ゲーム説明モジュールの取得
@@ -567,6 +565,13 @@ class TwoPrisonersAndChessboard:
 
             match event:
                 case Key.START:
+                    self.disable_elements(
+                        Player.JAILER,
+                        Player.PRISONER1,
+                        Player.PRISONER2,
+                        Key.START
+                    )
+                    self.hide_elements(Key.PLAYER_SETTINGS, Key.START)
                     self.run_jailer_phase(values[Player.JAILER])
 
                 case Key.SUBMIT:

@@ -1,15 +1,16 @@
 from enum import Enum
 
 class Key(Enum):
-    FINISH      = '-FINISH-'
-    INSTRUCTION = '-INSTRUCTION-'
-    NO          = '-NO-'
-    PHASE       = '-PHASE-'
-    SECRET      = '-SECRET-'
-    START       = '-START-'
-    SUBMIT      = '-SUBMIT-'
-    WARNING     = '-WARNING-'
-    YES         = '-YES-'
+    FINISH          = '-FINISH-'
+    INSTRUCTION     = '-INSTRUCTION-'
+    NO              = '-NO-'
+    PHASE           = '-PHASE-'
+    PLAYER_SETTINGS = 'PLAYER_SETTINGS'
+    SECRET          = '-SECRET-'
+    START           = '-START-'
+    SUBMIT          = '-SUBMIT-'
+    WARNING         = '-WARNING-'
+    YES             = '-YES-'
 
 
 class Lang(Enum):
