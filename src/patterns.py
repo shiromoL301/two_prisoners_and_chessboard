@@ -1,11 +1,14 @@
 from enum import Enum
 
 class Key(Enum):
+    ALL             = '-ALL-'
+    CLEAR           = '-CLEAR-'
     FINISH          = '-FINISH-'
     INSTRUCTION     = '-INSTRUCTION-'
     NO              = '-NO-'
     PHASE           = '-PHASE-'
-    PLAYER_SETTINGS = 'PLAYER_SETTINGS'
+    PLAYER_SETTINGS = '-PLAYER_SETTINGS-'
+    RANDOM          = '-RANDOM-'
     SECRET          = '-SECRET-'
     START           = '-START-'
     SUBMIT          = '-SUBMIT-'

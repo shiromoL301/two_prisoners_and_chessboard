@@ -5,6 +5,18 @@ class GuideText:
         self.lang = lang
         self.players_name = players_name
     
+    @property
+    def all(self) -> str:
+        match self.lang:
+            case Lang.CHI:
+                return "全部"
+            case Lang.FR:
+                return "Tous"
+            case Lang.JA:
+                return "全配置"
+            case _:
+                return "All"
+    
     def answer_by_prisoner2(self, answer: int) -> str:
         match self.lang:
             case Lang.CHI:
@@ -52,6 +64,18 @@ class GuideText:
             case _:
                 return "Parities of the chessboard:"
     
+    @property
+    def clear(self) -> str:
+        match self.lang:
+            case Lang.CHI:
+                return "全部清除"
+            case Lang.FR:
+                return "Clair"
+            case Lang.JA:
+                return "クリア"
+            case _:
+                return "Clear"
+
     @property
     def confirmation_screen(self) -> str:
         match self.lang:
@@ -117,8 +141,8 @@ class GuideText:
             case Lang.JA:
                 return f"{self.jailer}が選んだ数字は「{secret}」です。"
             case _:
-                return f"The {self.jailer}'s chosen number is ``{secret}''."
-    
+                return f"The {self.jailer}'s chosen number is ``{secret}''." 
+     
     @property
     def finish(self) -> str:
         match self.lang:
@@ -429,6 +453,18 @@ class GuideText:
                 return f"正解です！{self.prisoner}の勝利！！"
             case _:
                 return f"Congratulations! {self.prisoner}s win!"
+    
+    @property
+    def random(self) -> str:
+        match self.lang:
+            case Lang.CHI:
+                return "随机排列"
+            case Lang.FR:
+                return "Au Hasard"
+            case Lang.JA:
+                return "ランダム配置"
+            case _:
+                return "Random"
     
     def result(self, winner: str) -> str:
         match self.lang:

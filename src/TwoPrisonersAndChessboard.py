@@ -151,6 +151,16 @@ class TwoPrisonersAndChessboard:
                 self.menu_layout(), background_color=self.gui_theme.color_theme.background_color)
         ]
         return [[title_element], body_module]
+    
+    def build_full_board(self) -> None:
+        """全配置盤面のビルド"""
+        self.board = [[Pawn() for _ in range(self.ncols)] for _ in range(self.nrows)]
+        self.render_board()
+
+    def build_empty_board(self) -> None:
+        """空盤面のビルド"""
+        self.board = [[Blank() for _ in range(self.ncols)] for _ in range(self.nrows)]
+        self.render_board()
 
     def build_random_board(self) -> None:
         """ランダムな盤面のビルド"""
@@ -374,7 +384,7 @@ class TwoPrisonersAndChessboard:
 
         match jailer_player:
             case self.text.player:
-                self.show_elements(Key.SECRET, Key.SUBMIT)
+                self.show_elements(Key.ALL, Key.CLEAR, Key.RANDOM, Key.SECRET, Key.SUBMIT)
 
             case self.text.cpu:
                 self.window[Key.PHASE].update(
@@ -394,7 +404,7 @@ class TwoPrisonersAndChessboard:
             prisoner1_player: str: 囚人1のプレイヤー．self.text.player または self.text.cpu．
         """
         self.log_phase_jailer()
-        self.hide_elements(Key.SECRET, Key.SUBMIT, Key.WARNING)
+        self.hide_elements(Key.ALL, Key.CLEAR, Key.RANDOM, Key.SECRET, Key.SUBMIT, Key.WARNING)
         self.phase = Player.PRISONER1
         self.window[Key.PHASE].update(value=self.text.phase(self.phase))
 
@@ -518,6 +528,11 @@ class TwoPrisonersAndChessboard:
             [self.render_text('', key=Key.PHASE, is_accent=True)],
             [self.render_text('', key=Key.INSTRUCTION)],
             [
+                sg.Button(self.text.all, key=Key.ALL, visible=False),
+                sg.Button(self.text.random, key=Key.RANDOM, visible=False),
+                sg.Button(self.text.clear, key=Key.CLEAR, visible=False)
+            ],
+            [
                 sg.Combo(
                     list(range(1, self.ncells+1)),
                     default_value=1,
@@ -564,6 +579,15 @@ class TwoPrisonersAndChessboard:
                         pass
 
             match event:
+                case Key.ALL:
+                    self.build_full_board()
+                
+                case Key.CLEAR:
+                    self.build_empty_board()
+                
+                case Key.RANDOM:
+                    self.build_random_board()
+                
                 case Key.START:
                     self.disable_elements(
                         Player.JAILER,
