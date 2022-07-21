@@ -472,14 +472,14 @@ class TwoPrisonersAndChessboard:
         """
         for key in keys:
             self.window[key].update(visible=True)
-
-    def menu_layout(self) -> list[list[sg.Element]]:
-        """メニューレイアウトの取得
+    
+    def player_settings_module(self) -> sg.Column:
+        """プレイヤー設定モジュールの取得
 
         Returns:
-            list[list[sg.Element]]: メニューレイアウト
+            sg.Column: プレイヤー設定モジュール
         """
-        return [
+        return sg.Column([
             [self.render_text(self.text.player_settings, is_accent=True)],
             [
                 self.render_text(f'{self.text.jailer}:'),
@@ -507,8 +507,16 @@ class TwoPrisonersAndChessboard:
                     key=Player.PRISONER2,
                     readonly=True
                 )
-            ],
-            [sg.Button(self.text.start, key=Key.START)],
+            ]
+        ], background_color=self.gui_theme.color_theme.background_color)
+        
+    def instruction_module(self) -> sg.Column:
+        """ゲーム説明モジュールの取得
+
+        Returns:
+            sg.Column: ゲーム説明モジュール
+        """
+        return sg.Column([
             [self.render_text('', key=Key.PHASE, is_accent=True)],
             [self.render_text('', key=Key.INSTRUCTION)],
             [
@@ -527,7 +535,19 @@ class TwoPrisonersAndChessboard:
                 key=Key.WARNING,
                 text_color=self.gui_theme.color_theme.accent_color,
                 visible=False
-            )],
+            )]
+        ], background_color=self.gui_theme.color_theme.background_color)
+
+    def menu_layout(self) -> list[list[sg.Element]]:
+        """メニューレイアウトの取得
+
+        Returns:
+            list[list[sg.Element]]: メニューレイアウト
+        """
+        return [
+            [self.player_settings_module()],
+            [sg.Button(self.text.start, key=Key.START)],
+            [self.instruction_module()],
             [sg.Button(self.text.finish, visible=False, key=Key.FINISH)]
         ]
 
