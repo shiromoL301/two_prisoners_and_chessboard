@@ -336,7 +336,10 @@ class TwoPrisonersAndChessboard:
         sub_layout = [
             [sg.Text(
                 self.text.confirm_removal_pawn_at(location) if self.board[row-1][col-1]
-                else self.text.confirm_placement_pawn_at(location)
+                else self.text.confirm_placement_pawn_at(location),
+                text_color=self.gui_theme.color_theme.text_color,
+                font=(self.gui_theme.font_theme.text_font, 10),
+                background_color=self.gui_theme.color_theme.background_color
             )],
             [sg.Button(self.text.yes, key=Key.YES),
              sg.Button(self.text.no, key=Key.NO)]
@@ -348,7 +351,8 @@ class TwoPrisonersAndChessboard:
             self.text.confirmation_screen,
             sub_layout,
             size=(sub_window_width, sub_window_height),
-            location=(sub_window_pos_x, sub_window_pos_y)
+            location=(sub_window_pos_x, sub_window_pos_y),
+            background_color=self.gui_theme.color_theme.background_color
         )
 
         self.deactivate_board()
