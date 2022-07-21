@@ -13,9 +13,10 @@ class Key(Enum):
 
 
 class Lang(Enum):
-    EN = "English"
-    FR = "French"
-    JA = "Japanese"        
+    CHI = "Chinese"
+    EN  = "English"
+    FR  = "French"
+    JA  = "Japanese"        
 
 
 class Player(Enum):
