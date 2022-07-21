@@ -14,6 +14,7 @@ class Key(Enum):
 
 class Lang(Enum):
     EN = "English"
+    FR = "French"
     JA = "Japanese"        
 
 
