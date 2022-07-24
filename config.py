@@ -8,8 +8,8 @@ COLOR_THEME = ColorTheme.reddit()
 FONT_THEME = FontTheme.natural()
 THEME = GuiTheme(COLOR_THEME, FONT_THEME)
 
-IMAGE_PATH = 'images/'
-LOG_PATH = 'log/'
+IMAGE_ROOT = 'images/'
+LOG_ROOT = 'log/'
 
 LOG_FORMAT = '[%(levelname)s] %(funcName)s at line %(lineno)d | %(asctime)s\n%(message)s'
 LOG_FILENAME = 'two_prisoners_and_chessboard.log'

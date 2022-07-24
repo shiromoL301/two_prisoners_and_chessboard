@@ -2,13 +2,13 @@ import logging
 import os
 
 from src.TwoPrisonersAndChessboard import TwoPrisonersAndChessboard
-from config import LANGUAGE, LEVEL, TITLE_TYPE, THEME, LOG_FILENAME, LOG_FORMAT, LOG_PATH
+from config import LANGUAGE, LEVEL, TITLE_TYPE, THEME, LOG_FILENAME, LOG_FORMAT, LOG_ROOT
 
 
 def main():
-    if not os.path.exists(LOG_PATH):
-        os.makedirs(LOG_PATH)
-    log_file_path = f'{LOG_PATH}/{LOG_FILENAME}'
+    if not os.path.exists(LOG_ROOT):
+        os.makedirs(LOG_ROOT)
+    log_file_path = f'{LOG_ROOT}/{LOG_FILENAME}'
     logging.basicConfig(filename=log_file_path, filemode='w',
                         level=logging.DEBUG, format=LOG_FORMAT)
 

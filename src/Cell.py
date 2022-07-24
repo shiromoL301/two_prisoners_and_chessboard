@@ -4,7 +4,7 @@ from abc import ABCMeta, abstractmethod
 import os
 
 from .Color import Color
-from config import IMAGE_PATH
+from config import IMAGE_ROOT
 
 class Cell(metaclass=ABCMeta): 
     def __bool__(self) -> bool:
@@ -35,7 +35,7 @@ class Cell(metaclass=ABCMeta):
         pass
     
     def get_image_path(self) -> str:
-        return os.path.join(IMAGE_PATH, self.image_name()) 
+        return os.path.join(IMAGE_ROOT, self.image_name()) 
 
     def rendered_at(
             self,
