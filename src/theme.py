@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from .Color import Color
-from .Font import Font
+from .colors import Color
+from .fonts import Font
 
 class ColorTheme:
     def __init__(

@@ -6,7 +6,7 @@ import random
 from typing import Any, Generator
 
 from .square import Square, Blank, Pawn
-from .GuideText import GuideText
+from .guide_text import GuideText
 from .patterns import Key, Lang, Player, PlayersName
 from .parity_check import parity_check
 from .theme import FontTheme, GuiTheme, ColorTheme

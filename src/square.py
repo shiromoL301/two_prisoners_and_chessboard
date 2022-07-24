@@ -3,7 +3,7 @@ import PySimpleGUI as sg
 from abc import ABCMeta, abstractmethod
 import os
 
-from .Color import Color
+from .colors import Color
 from config import IMAGE_ROOT
 
 class Square(metaclass=ABCMeta): 
