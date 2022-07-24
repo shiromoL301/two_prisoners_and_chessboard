@@ -620,6 +620,7 @@ class TwoPrisonersAndChessboard:
                             pass
 
                 case Key.FINISH | sg.WIN_CLOSED:
+                    logging.info(self.text.app_closed)
                     break
 
                 case _:

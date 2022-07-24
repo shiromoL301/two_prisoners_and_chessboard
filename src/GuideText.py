@@ -27,6 +27,19 @@ class GuideText:
                 return f"{self.prisoner}2の回答は「{answer}」です。"
             case _:
                 return f"The answer submitted by {self.prisoner} 2\nis ``{answer}''"
+    
+    @property
+    def app_closed(self) -> str:
+        match self.lang:
+            case Lang.CHI:
+                return "关闭应用程序。"
+            case Lang.FR:
+                return "Fermé l'application." 
+            case Lang.JA:
+                return "アプリを終了しました。"
+            case _:
+                return "Closed the App."
+
 
     @property
     def board_after_flipped(self) -> str:
