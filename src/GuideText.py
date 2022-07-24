@@ -168,7 +168,7 @@ class GuideText:
             case _:
                 return "Finish"
     
-    def flipped_cell(self, location: tuple[int, int]) -> str:
+    def flipped_square(self, location: tuple[int, int]) -> str:
         row = location[0] + 1
         col = location[1] + 1
         match self.lang:

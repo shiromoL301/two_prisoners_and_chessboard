@@ -6,7 +6,7 @@ import os
 from .Color import Color
 from config import IMAGE_ROOT
 
-class Cell(metaclass=ABCMeta): 
+class Square(metaclass=ABCMeta): 
     def __bool__(self) -> bool:
         return bool(int(self))
 
@@ -67,7 +67,7 @@ class Cell(metaclass=ABCMeta):
         )
     
 
-class Blank(Cell):
+class Blank(Square):
     def __int__(self) -> int:
         return 0
     
@@ -78,7 +78,7 @@ class Blank(Cell):
         return 'blank.png'
 
 
-class Pawn(Cell):
+class Pawn(Square):
     def __int__(self) -> int:
         return 1
     

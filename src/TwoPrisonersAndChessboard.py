@@ -5,7 +5,7 @@ import logging
 import random
 from typing import Any, Generator
 
-from .Cell import Cell, Blank, Pawn
+from .square import Square, Blank, Pawn
 from .GuideText import GuideText
 from .patterns import Key, Lang, Player, PlayersName
 from .parity_check import parity_check
@@ -27,7 +27,7 @@ class TwoPrisonersAndChessboard:
         self.__level: int = level
         self.__gui_theme: GuiTheme = gui_theme
 
-        self.board: list[list[Cell]] = [[Blank() for _ in range(self.ncols)]
+        self.board: list[list[Square]] = [[Blank() for _ in range(self.ncols)]
                                         for _ in range(self.nrows)]
         self.phase: Player = Player.JAILER
 
@@ -90,7 +90,7 @@ class TwoPrisonersAndChessboard:
         return self.__gui_theme
 
     @cached_property
-    def ncells(self) -> int:
+    def nsquares(self) -> int:
         """盤面のマス数を取得する．Read Only．
 
         Returns:
@@ -170,12 +170,12 @@ class TwoPrisonersAndChessboard:
     def activate_board(self) -> None:
         """盤面を有効化する"""
         self.enable_elements(*[int2nary(i, self.ncols, length=2)
-                             for i in range(self.ncells)])
+                             for i in range(self.nsquares)])
 
     def deactivate_board(self) -> None:
         """盤面を無効化する"""
         self.disable_elements(*[int2nary(i, self.ncols, length=2)
-                              for i in range(self.ncells)])
+                              for i in range(self.nsquares)])
 
     def disable_elements(self, *keys: tuple[Key]) -> None:
         """要素を無効化する
@@ -195,7 +195,7 @@ class TwoPrisonersAndChessboard:
         for key in keys:
             self.window[key].update(disabled=False)
 
-    def flip_cell_at(self, location: tuple[int, int]) -> None:
+    def flip_square_at(self, location: tuple[int, int]) -> None:
         """マスの反転
 
         Args:
@@ -215,30 +215,30 @@ class TwoPrisonersAndChessboard:
         """
         return [
             [
-                cell.rendered_at(
+                square.rendered_at(
                     (i, j),
                     light_color=self.gui_theme.color_theme.square_light_color,
                     dark_color=self.gui_theme.color_theme.square_dark_color
                 )
-                for j, cell in enumerate(row)
+                for j, square in enumerate(row)
             ]
             for i, row in enumerate(self.board)
         ]
 
-    def generate_cells_keys(self) -> Generator[tuple[int, int], None, None]:
+    def generate_squares_keys(self) -> Generator[tuple[int, int], None, None]:
         """マスを制御するキーの生成
 
         Yields:
             Generator[tuple[int, int], None, None]: マスを制御するキーのジェネレータ
         """
-        for cell_idx in range(self.ncells):
-            yield int2nary(cell_idx, self.ncols, length=2)
+        for square_idx in range(self.nsquares):
+            yield int2nary(square_idx, self.ncols, length=2)
 
-    def generate_random_board(self) -> list[list[Cell]]:
+    def generate_random_board(self) -> list[list[Square]]:
         """ランダムなチェス盤の生成
 
         Returns:
-            list[list[Cell]]: ランダムに生成したチェス盤
+            list[list[Square]]: ランダムに生成したチェス盤
         """
         return [[random.choice([Blank(), Pawn()]) for _ in range(self.ncols)] for _ in range(self.nrows)]
 
@@ -257,7 +257,7 @@ class TwoPrisonersAndChessboard:
         Returns:
             bool: 秘密値が正当であるか
         """
-        return isinstance(self.secret, int) and (1 <= self.secret <= self.ncells)
+        return isinstance(self.secret, int) and (1 <= self.secret <= self.nsquares)
 
     def log_parity_check_calc(self, secret_binary: tuple[int], parities: tuple[int], flipping_binary: tuple[int]) -> None:
         """パリティ検査の結果のログを取る"""
@@ -280,7 +280,7 @@ class TwoPrisonersAndChessboard:
     def log_phase_prisoner1(self) -> None:
         """囚人1の操作のログを取る"""
         buffer = [
-            self.text.flipped_cell(self.flipped),
+            self.text.flipped_square(self.flipped),
             self.text.board_after_flipped,
             '\n'.join(map(str, self.board_as_ints()))
         ]
@@ -293,7 +293,7 @@ class TwoPrisonersAndChessboard:
 
     def render_board(self) -> None:
         """盤面を描画する"""
-        for (i, j) in self.generate_cells_keys():
+        for (i, j) in self.generate_squares_keys():
             self.window[(i, j)].update(
                 image_filename=self.board[i][j].get_image_path())
 
@@ -362,7 +362,7 @@ class TwoPrisonersAndChessboard:
 
             match sub_event:
                 case Key.YES:
-                    self.flip_cell_at(location)
+                    self.flip_square_at(location)
                     self.flipped = location
                     self.window[Key.SUBMIT].update(
                         text=self.text.next, visible=True)
@@ -384,7 +384,7 @@ class TwoPrisonersAndChessboard:
         self.activate_board()
         self.window[Key.PHASE].update(value=self.text.phase(self.phase))
         self.window[Key.INSTRUCTION].update(
-            value=self.text.jailer_instruction(self.ncells))
+            value=self.text.jailer_instruction(self.nsquares))
 
         match jailer_player:
             case self.text.player:
@@ -394,7 +394,7 @@ class TwoPrisonersAndChessboard:
                 self.window[Key.PHASE].update(
                     value=self.text.phase(self.phase))
                 self.window[Key.SECRET].update(
-                    value=random.randint(1, self.ncells))
+                    value=random.randint(1, self.nsquares))
                 self.build_random_board()
                 self.deactivate_board()
                 self.window[Key.INSTRUCTION].update(value=self.text.jailer_log)
@@ -420,13 +420,13 @@ class TwoPrisonersAndChessboard:
                 value=self.text.display_jailer_secret(self.secret), visible=True)
         else:
             secret_binary = int2nary(self.secret %
-                                     self.ncells, 2, length=self.ncols)
+                                     self.nsquares, 2, length=self.ncols)
             parity = parity_check(self.board)
             parities = int2nary(parity, 2, length=self.ncols)
             flipping_binary = xor(secret_binary, parities)
             flipping_label = nary2int(flipping_binary, 2)
             self.flipped = int2nary(flipping_label, self.ncols, length=2)
-            self.flip_cell_at(self.flipped)
+            self.flip_square_at(self.flipped)
 
             self.log_parity_check_calc(
                 secret_binary, parities, flipping_binary)
@@ -450,7 +450,7 @@ class TwoPrisonersAndChessboard:
             self.window[Key.SUBMIT].update(text=self.text.ok, visible=True)
         else:
             self.answer = parity_check(self.board)
-            self.answer = self.answer if self.answer else self.ncells
+            self.answer = self.answer if self.answer else self.nsquares
             self.window[Key.INSTRUCTION].update(
                 value=self.text.answer_by_prisoner2(self.answer))
             self.window[Key.SUBMIT].update(
@@ -538,7 +538,7 @@ class TwoPrisonersAndChessboard:
             ],
             [
                 sg.Combo(
-                    list(range(1, self.ncells+1)),
+                    list(range(1, self.nsquares+1)),
                     default_value=1,
                     visible=False,
                     key=Key.SECRET
@@ -573,10 +573,10 @@ class TwoPrisonersAndChessboard:
         while True:
             event, values = self.window.read()
 
-            if event in self.generate_cells_keys():
+            if event in self.generate_squares_keys():
                 match self.phase:
                     case Player.JAILER:
-                        self.flip_cell_at(event)
+                        self.flip_square_at(event)
                     case Player.PRISONER1:
                         self.run_confirmation_for_prisoner1(event)
                     case _:
@@ -611,7 +611,7 @@ class TwoPrisonersAndChessboard:
                                     values[Player.PRISONER1])
                             else:
                                 self.window[Key.WARNING].update(
-                                    visible=True, value=self.text.validation(self.ncells))
+                                    visible=True, value=self.text.validation(self.nsquares))
                         case Player.PRISONER1:
                             self.run_prisoner2_phase(values[Player.PRISONER2])
                         case Player.PRISONER2:
