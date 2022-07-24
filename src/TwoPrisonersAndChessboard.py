@@ -139,7 +139,7 @@ class TwoPrisonersAndChessboard:
         body_module = [
             sg.Column(
                 self.generate_board_layout(),
-                expand_y=True,
+                size = (1000, 1000),
                 scrollable=True,
                 vertical_scroll_only=False
             ),
