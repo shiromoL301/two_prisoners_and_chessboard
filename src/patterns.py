@@ -20,6 +20,7 @@ class Lang(Enum):
     CHS = "Chinese"
     ENG  = "English"
     FRA  = "French"
+    ITA = "Italy"
     JPN  = "Japanese"        
 
 
