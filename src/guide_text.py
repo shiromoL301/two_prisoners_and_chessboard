@@ -59,7 +59,7 @@ class GuideText:
             case Lang.JPN:
                 return "変更後のチェス盤の状態:"
             case _:
-                return "Board after flipped:"
+                return "Chessboard after flipped:"
     
     @property
     def board_from_jailer(self) -> str:
@@ -130,7 +130,7 @@ class GuideText:
             case Lang.JPN:
                 return f"{row}行{col}列目にポーンを設置しますか？"
             case _:
-                return f"Do you want to place pawn \nin row {row}, column {col}?"
+                return f"Do you want to place a pawn \nin row {row}, column {col}?"
     
     def confirm_removal_pawn_at(self, location) -> str:
         row = location[0] + 1
@@ -145,7 +145,7 @@ class GuideText:
             case Lang.JPN:
                 return f"{row}行{col}列目のポーンを取り除きますか？"
             case _:
-                return f"Do you want to remove pawn \nin row {row}, column {col}?"
+                return f"Do you want to remove the pawn \nin row {row}, column {col}?"
     
     @property
     def confirm_result(self) -> str:
@@ -517,7 +517,7 @@ class GuideText:
             case Lang.JPN:
                 return f"{self.prisoner}1がチェス盤の状態を1箇所変更しました。"
             case _:
-                return f"{self.prisoner}1 changed one of the squares\nin the chessboard."
+                return f"{self.prisoner} 1 changed one of the squares\nin the chessboard."
     
     @property
     def prisoner2_instruction(self) -> str:
