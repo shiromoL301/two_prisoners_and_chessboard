@@ -3,7 +3,7 @@ from src.patterns import PlayersName, Lang
 
 LEVEL = 4  # 1以上(6以下推奨)
 TITLE_TYPE = PlayersName.JAIL_PRISON
-LANGUAGE = Lang.JA
+LANGUAGE = Lang.JPN
 COLOR_THEME = ColorTheme.reddit()
 FONT_THEME = FontTheme.natural()
 THEME = GuiTheme(COLOR_THEME, FONT_THEME)

@@ -18,7 +18,7 @@ class TwoPrisonersAndChessboard:
         self,
         level: int,
         gui_theme: GuiTheme = GuiTheme(ColorTheme.reddit(), FontTheme.arial()),
-        language: Lang = Lang.JA,
+        language: Lang = Lang.ENG,
         players_name: PlayersName = PlayersName.JAIL_PRISON
     ):
         if level < 1:
