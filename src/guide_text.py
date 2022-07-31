@@ -102,6 +102,34 @@ class GuideText:
                 return "クリア"
             case _:
                 return "Clear"
+    
+    @property
+    def clear_logs(self) -> str:
+        match self.lang:
+            case Lang.CHS:
+                return "清除日志"
+            case Lang.FRA:
+                return "Effacer les journaux"
+            case Lang.ITA:
+                return "Cancella registri"
+            case Lang.JPN:
+                return "ログを消去"
+            case _:
+                return "Clear Logs"
+    
+    @property
+    def color_theme(self) -> str:
+        match self.lang:
+            case Lang.CHS:
+                return "色彩主题"
+            case Lang.FRA:
+                return "Thème de la couleur"
+            case Lang.ITA:
+                return "Tema del colore"
+            case Lang.JPN:
+                return "カラーテーマ"
+            case _:
+                return "Color Theme"
 
     @property
     def confirmation_screen(self) -> str:
@@ -208,6 +236,20 @@ class GuideText:
                 return f"{self.prisoner}1が変更したマス: {row}行{col}列目"
             case _:
                 return f"Flipped Square by {self.prisoner} 1: row {row}, column {col}"
+    
+    @property
+    def font_theme(self) -> str:
+        match self.lang:
+            case Lang.CHS:
+                return "字体主题"
+            case Lang.FRA:
+                return "Thème de la police"
+            case Lang.ITA:
+                return "Tema dei caratteri"
+            case Lang.JPN:
+                return "フォントテーマ"
+            case _:
+                return "Font Theme"
     
     @property
     def game_title(self) -> str:
@@ -339,6 +381,48 @@ class GuideText:
                 return f"Mission failure! The {self.jailer} wins!"
     
     @property
+    def language(self) -> str:
+        match self.lang:
+            case Lang.CHS:
+                return "语言"
+            case Lang.FRA:
+                return "Langue"
+            case Lang.ITA:
+                return "Lingua"
+            case Lang.JPN:
+                return "言語"
+            case _:
+                return "Language"
+    
+    @property
+    def last_game_id(self) -> str:
+        match self.lang:
+            case Lang.CHS:
+                return "最后的游戏ID"
+            case Lang.FRA:
+                return "Dernier jeu ID"
+            case Lang.ITA:
+                return "ID ultimo gioco"
+            case Lang.JPN:
+                return "最終ゲームID"
+            case _:
+                return "Last Game ID"
+    
+    @property
+    def level(self) -> str:
+        match self.lang:
+            case Lang.CHS:
+                return "水平"
+            case Lang.FRA:
+                return "Niveau"
+            case Lang.ITA:
+                return "Livello"
+            case Lang.JPN:
+                return "レベル"
+            case _:
+                return "Level"
+    
+    @property
     def next(self) -> str:
         match self.lang:
             case Lang.CHS:
@@ -365,6 +449,19 @@ class GuideText:
                 return "いいえ"
             case _:
                 return "No"
+    
+    def nth_play(self, number: int) -> str:
+        match self.lang:
+            case Lang.CHS:
+                return f"第{number}场演出"
+            case Lang.FRA:
+                return f"{number}ème Jeu"
+            case Lang.ITA:
+                return f"{number}° Gioco"
+            case Lang.JPN:
+                return f"{number}回目のプレイ"
+            case _:
+                return f"{number}th Play"
     
     @property
     def number_from_jailer(self) -> str:
@@ -615,6 +712,20 @@ class GuideText:
                 return "スタート"
             case _:
                 return "Start" 
+    
+    @property
+    def ui_settings(self) -> str:
+        match self.lang:
+            case Lang.CHS:
+                return "[UI设置]"
+            case Lang.FRA:
+                return "[Paramètres de l'IU]"
+            case Lang.ITA:
+                return "[Impostazioni UI]"
+            case Lang.JPN:
+                return "【UI設定】"
+            case _:
+                return "[UI Settings]"
     
     def validation(self, max_num: int) -> str:
         match self.lang:
