@@ -193,7 +193,7 @@ class TwoPrisonersAndChessboard:
             sg.Column(self.generate_board_layout()), sg.Column(
                 self.menu_layout(), background_color=self.gui_theme.color_theme.background_color)
         ]
-        return [[title_element, subtitle_element], body_module]
+        return [[title_element], [subtitle_element], body_module]
     
     def build_full_board(self) -> None:
         """全配置盤面のビルド"""

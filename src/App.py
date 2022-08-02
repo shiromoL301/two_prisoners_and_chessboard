@@ -5,26 +5,47 @@ import os
 import shutil
 from typing import Any
 
-from config import DEFAULT_LEVEL, LOG_ROOT, LOG_FILE_SUFFIX, DEFAULT_TITLE_TYPE
+from config import DEFAULT_COLOR_THEME, DEFAULT_FONT_THEME, DEFAULT_LEVEL, LOG_ROOT, LOG_FILE_SUFFIX, DEFAULT_TITLE_TYPE
 from src.TwoPrisonersAndChessboard import TwoPrisonersAndChessboard
+from src.square import Blank, Pawn, Square
 
 from .guide_text import GuideText
 from .patterns import Key, Lang, Player, PlayerType, PlayersName, Text
 from .theme import ColorTheme, FontTheme, GuiTheme
 
 class App:
-    def __init__(self, language: Lang=Lang.ENG, players_name: PlayersName=PlayersName.JAIL_PRISON):
+    def __init__(
+        self,
+        language: Lang=Lang.ENG,
+        players_name: PlayersName=PlayersName.JAIL_PRISON,
+        color_theme: ColorTheme=DEFAULT_COLOR_THEME,
+        font_theme: FontTheme=DEFAULT_FONT_THEME):
+        self.color_theme = color_theme
+        self.font_theme = font_theme
         self.language = language
         self.players_name = players_name
         self.game_count = 0
         self.last_game_id = 0
 
         layout = [
-            [sg.Text(self.text().game_title, font=(None, 18), key=Text.TITLE)],
-            [self.player_settings_module(), self.extra_settings_module()],
+            [sg.Text(
+                self.text().game_title,
+                font=(self.font_theme.title_font, 18),
+                text_color=self.color_theme.title_color,
+                background_color=self.color_theme.background_color,
+                key=Text.TITLE
+            )],
+            [self.player_settings_module(), self.extra_settings_module(), self.sample_board_element()],
             [
                 sg.Button(self.text().start, key=Key.START),
-                sg.Text("", key=Key.LAST_GAME_ID, visible=False),
+                sg.Text(
+                    "",
+                    font=(self.font_theme.accent_font, 10),
+                    text_color=self.color_theme.accent_color,
+                    background_color=self.color_theme.background_color,
+                    key=Key.LAST_GAME_ID,
+                    visible=False
+                ),
                 sg.Button(self.text().clear_logs, key=Key.CLEAR, visible=False)
             ],
         ]
@@ -32,7 +53,8 @@ class App:
         self.window = sg.Window(
             self.text().game_title,
             layout,
-            size=(580, 250),
+            size=(640, 250),
+            background_color=self.color_theme.background_color,
             resizable=True
         )
     
@@ -61,9 +83,21 @@ class App:
             sg.Column: 各種設定用モジュール
         """
         return sg.Column([
-            [sg.Text(self.text().ui_settings, font=(None, 12), key=Text.UI_SETTINGS)],
+            [sg.Text(
+                self.text().ui_settings,
+                font=(self.font_theme.accent_font, 12),
+                text_color=self.color_theme.title_color,
+                background_color=self.color_theme.background_color,
+                key=Text.UI_SETTINGS
+            )],
             [
-                sg.Text(self.text().language, key=Text.LANGUAGE),
+                sg.Text(
+                    self.text().language,
+                    font=(self.font_theme.text_font, 10),
+                    text_color=self.color_theme.text_color,
+                    background_color=self.color_theme.background_color,
+                    key=Text.LANGUAGE
+                ),
                 sg.Combo(
                     [*self.language_dict().values()],
                     default_value=self.language_dict()[self.language],
@@ -73,24 +107,41 @@ class App:
                 )
             ],
             [
-                sg.Text(self.text().color_theme, key=Text.COLOR_THEME),
+                sg.Text(
+                    self.text().color_theme,
+                    font=(self.font_theme.text_font, 10),
+                    text_color=self.color_theme.text_color,
+                    background_color=self.color_theme.background_color,
+                    key=Text.COLOR_THEME
+                ),
                 sg.Combo(
                     list(ColorTheme.get_catalog(str2enum=True).keys()),
+                    # sg.theme_list(),
                     default_value="Reddit",
                     key=Key.COLOR_THEME,
-                    readonly=True
+                    readonly=True,
+                    enable_events=True
                 )
             ],
             [
-                sg.Text(self.text().font_theme, key=Text.FONT_THEME),
+                sg.Text(
+                    self.text().font_theme,
+                    font=(self.font_theme.text_font, 10),
+                    text_color=self.color_theme.text_color,
+                    background_color=self.color_theme.background_color,
+                    key=Text.FONT_THEME
+                ),
                 sg.Combo(
                     list(FontTheme.get_catalog(str2enum=True).keys()),
                     default_value="Natural",
                     key=Key.FONT_THEME,
-                    readonly=True
+                    readonly=True,
+                    enable_events=True
                 )
             ]
-        ], key=Key.PLAYER_SETTINGS)
+        ], 
+        background_color=self.color_theme.background_color,
+        key=Key.PLAYER_SETTINGS)
     
     def player_settings_module(self) -> sg.Column:
         """プレイヤー設定モジュールの取得
@@ -99,9 +150,21 @@ class App:
             sg.Column: プレイヤー設定モジュール
         """
         return sg.Column([
-            [sg.Text(self.text().player_settings, font=(None, 12), key=Text.PLAYER_SETTINGS)],
+            [sg.Text(
+                self.text().player_settings,
+                font=(self.font_theme.accent_font, 12),
+                text_color=self.color_theme.title_color,
+                background_color=self.color_theme.background_color,
+                key=Text.PLAYER_SETTINGS
+            )],
             [
-                sg.Text(self.text().level, key=Text.LEVEL),
+                sg.Text(
+                    self.text().level,
+                    font=(self.font_theme.text_font, 10),
+                    text_color=self.color_theme.text_color,
+                    background_color=self.color_theme.background_color,
+                    key=Text.LEVEL
+                ),
                 sg.Combo(
                     list(range(1, 8)),
                     default_value=DEFAULT_LEVEL,
@@ -110,7 +173,13 @@ class App:
                 )
             ],
             [
-                sg.Text(f'{self.text().jailer}:', key=Text.JAILER),
+                sg.Text(
+                    f'{self.text().jailer}:',
+                    font=(self.font_theme.text_font, 10),
+                    text_color=self.color_theme.text_color,
+                    background_color=self.color_theme.background_color,
+                    key=Text.JAILER
+                ),
                 sg.Combo(
                     [self.text().player, self.text().cpu],
                     default_value=self.text().player,
@@ -119,7 +188,13 @@ class App:
                 )
             ],
             [
-                sg.Text(f'{self.text().prisoner}1:', key=Text.PRISONER1),
+                sg.Text(
+                    f'{self.text().prisoner}1:',
+                    font=(self.font_theme.text_font, 10),
+                    text_color=self.color_theme.text_color,
+                    background_color=self.color_theme.background_color,
+                    key=Text.PRISONER1
+                ),
                 sg.Combo(
                     [self.text().player, self.text().cpu],
                     default_value=self.text().player,
@@ -128,7 +203,13 @@ class App:
                 )
             ],
             [
-                sg.Text(f'{self.text().prisoner}2:', key=Text.PRISONER2),
+                sg.Text(
+                    f'{self.text().prisoner}2:', 
+                    font=(self.font_theme.text_font, 10),
+                    text_color=self.color_theme.text_color,
+                    background_color=self.color_theme.background_color,
+                    key=Text.PRISONER2
+                ),
                 sg.Combo(
                     [self.text().player, self.text().cpu],
                     default_value=self.text().player,
@@ -136,22 +217,92 @@ class App:
                     readonly=True
                 )
             ]
-        ], key=Key.PLAYER_SETTINGS)
+        ],
+        background_color=self.color_theme.background_color,
+        key=Key.PLAYER_SETTINGS)
     
     def rerender_window(self):
-        self.window[Text.TITLE].update(value=self.text().game_title)
-        self.window[Text.PLAYER_SETTINGS].update(value=self.text().player_settings)
-        self.window[Text.LEVEL].update(value=self.text().level)
-        self.window[Text.JAILER].update(value=f"{self.text().jailer}:")
-        self.window[Text.PRISONER1].update(value=f"{self.text().prisoner}1:")
-        self.window[Text.PRISONER2].update(value=f"{self.text().prisoner}2:")
-        self.window[Text.UI_SETTINGS].update(value=self.text().ui_settings)
-        self.window[Text.LANGUAGE].update(value=self.text().language)
-        self.window[Text.COLOR_THEME].update(value=self.text().color_theme)
-        self.window[Text.FONT_THEME].update(value=self.text().font_theme)
+        # self.window.TKroot.configure(background=self.color_theme.background_color)
+        # self.window.refresh()
         self.window[Key.START].update(text=self.text().start)
-        self.window[Key.LAST_GAME_ID].update(value=f"{self.text().last_game_id}: {self.last_game_id}")
         self.window[Key.CLEAR].update(text=self.text().clear_logs)
+        self.window[Text.TITLE].update(
+            value=self.text().game_title,
+            font=(self.font_theme.title_font, 18),
+            # text_color=self.color_theme.title_color,
+            # background_color=self.color_theme.background_color,
+        )
+        self.window[Key.LAST_GAME_ID].update(
+            value=f"{self.text().last_game_id}: {self.last_game_id}",
+            font=(self.font_theme.accent_font, 10),
+            # text_color=self.color_theme.accent_color,
+            # background_color=self.color_theme.background_color,
+        )
+        headers = [
+            (Text.PLAYER_SETTINGS, self.text().player_settings),
+            (Text.UI_SETTINGS, self.text().ui_settings)
+        ]
+        texts = [
+            (Text.LEVEL, self.text().level),
+            (Text.JAILER, f"{self.text().jailer}:"),
+            (Text.PRISONER1, f"{self.text().prisoner}1:"),
+            (Text.PRISONER2, f"{self.text().prisoner}2:"),
+            (Text.LANGUAGE, self.text().language),
+            (Text.COLOR_THEME, self.text().color_theme),
+            (Text.FONT_THEME, self.text().font_theme)
+        ]
+        for key, text in headers:
+            self.window[key].update(
+                value=text,
+                font=(self.font_theme.accent_font, 12),
+                # text_color=self.color_theme.title_color,
+                # background_color=self.color_theme.background_color,
+            )
+        for key, text in texts:
+            self.window[key].update(
+                value=text,
+                font=(self.font_theme.text_font, 10),
+                # text_color=self.color_theme.text_color,
+                # background_color=self.color_theme.background_color,
+            )
+        for (r, c) in {(0, 0), (0, 1), (1, 0), (1, 1)}:
+            color = self.color_theme.square_dark_color if (r + c) % 2 else self.color_theme.square_light_color
+            self.window[(r,c)].update(
+                button_color=('white', color),
+            )
+    
+    def sample_board_element(self) -> sg.Column:
+        return sg.Column([
+            [
+                Blank().rendered_at(
+                    (0, 0),
+                    light_color=self.color_theme.square_light_color,
+                    dark_color=self.color_theme.square_dark_color,
+                    disabled=False
+                ),
+                Blank().rendered_at(
+                    (0, 1),
+                    light_color=self.color_theme.square_light_color,
+                    dark_color=self.color_theme.square_dark_color,
+                    disabled=False
+                ),
+            ],
+            [
+                Pawn().rendered_at(
+                    (1, 0),
+                    light_color=self.color_theme.square_light_color,
+                    dark_color=self.color_theme.square_dark_color,
+                    disabled=False
+                ),
+                Pawn().rendered_at(
+                    (1, 1),
+                    light_color=self.color_theme.square_light_color,
+                    dark_color=self.color_theme.square_dark_color,
+                    disabled=False
+                ),
+            ]
+        ],
+        background_color='red')
     
     def create_log_file(self, values: dict[str, str]) -> tuple[str, int]:
         if not os.path.exists(LOG_ROOT):
@@ -214,6 +365,16 @@ class App:
                 
                 case Key.LANGUAGE:
                     self.language = self.language_dict(str2enum=True)[values[Key.LANGUAGE]]
+                    self.rerender_window()
+
+                case Key.COLOR_THEME:
+                    self.color_theme = ColorTheme.get_catalog(str2enum=True)[values[Key.COLOR_THEME]]
+                    self.rerender_window()
+                    # sg.theme(values[Key.COLOR_THEME])
+                    # self.window.refresh()
+
+                case Key.FONT_THEME:
+                    self.font_theme = FontTheme.get_catalog(str2enum=True)[values[Key.FONT_THEME]]
                     self.rerender_window()
                 
                 case Key.CLEAR:

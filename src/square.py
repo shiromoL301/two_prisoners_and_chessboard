@@ -42,6 +42,7 @@ class Square(metaclass=ABCMeta):
             location: tuple[int, int],
             light_color: str=Color.khaki,
             dark_color:str=Color.peru,
+            disabled: bool=True
         ) -> sg.PySimpleGUI.ReadButton: 
         """位置座標を元にしたセルの描画
 
@@ -62,7 +63,7 @@ class Square(metaclass=ABCMeta):
             border_width=0,
             button_color=('white', color),
             pad=(0, 0),
-            disabled=True,
+            disabled=disabled,
             key=location
         )
     
