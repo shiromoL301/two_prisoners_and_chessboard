@@ -19,12 +19,13 @@ class App:
         language: Lang=Lang.ENG,
         players_name: PlayersName=PlayersName.JAIL_PRISON,
         color_theme: ColorTheme=DEFAULT_COLOR_THEME,
-        font_theme: FontTheme=DEFAULT_FONT_THEME):
-        self.color_theme = color_theme
-        self.font_theme = font_theme
-        self.language = language
+        font_theme: FontTheme=DEFAULT_FONT_THEME
+    ):
+        self.color_theme  = color_theme
+        self.font_theme   = font_theme
+        self.language     = language
         self.players_name = players_name
-        self.game_count = 0
+        self.game_count   = 0
         self.last_game_id = 0
 
         layout = [

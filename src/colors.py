@@ -11,6 +11,11 @@ class Color:
     
     @classmethod
     @property
+    def blackstone_white(self) -> str:
+        return '#A9A8A8'
+    
+    @classmethod
+    @property
     def cobalt_green(self) -> str:
         return '#40BA8D'
     
@@ -51,6 +56,11 @@ class Color:
     
     @classmethod
     @property
+    def gray_white(self) -> str:
+        return '#CBCBCB'
+    
+    @classmethod
+    @property
     def jet_black(self) -> str:
         return '#1e1e1e'
 
@@ -58,6 +68,11 @@ class Color:
     @property
     def khaki(self) -> str:
         return '#f0e68c'
+    
+    @classmethod
+    @property
+    def khaki_white(self) -> str:
+        return "#F2EECF"
     
     @classmethod
     @property
@@ -71,13 +86,28 @@ class Color:
     
     @classmethod
     @property
+    def lightgray_white(self) -> str:
+        return '#E9E9E9'
+    
+    @classmethod
+    @property
     def lightseagreen(self) -> str:
         return '#DAF1E3'
     
     @classmethod
     @property
+    def lightseagreen_white(self) -> str:
+        return '#EAF2ED'
+    
+    @classmethod
+    @property
     def lightskyblue(self) -> str:
         return '#B9D6E8' 
+    
+    @classmethod
+    @property
+    def lightskyblue_white(self) -> str:
+        return '#DFE9EF'
     
     @classmethod
     @property
@@ -88,6 +118,11 @@ class Color:
     @property
     def peru(self) -> str:
         return '#cd853f'
+    
+    @classmethod
+    @property
+    def peru_white(self) -> str:
+        return "#E6CCB4"
     
     @classmethod
     @property
@@ -106,6 +141,11 @@ class Color:
     
     @classmethod
     @property
+    def seagreen_white(self) -> str:
+        return '#AFC1B8'
+    
+    @classmethod
+    @property
     def skyblue(self) -> str:
         return '#87ceeb'
     
@@ -113,6 +153,11 @@ class Color:
     @property
     def steelblue(self) -> str:
         return '#4790C0'
+        
+    @classmethod
+    @property
+    def steelblue_white(self) -> str:
+        return '#B7D0E1'
     
     @classmethod
     @property
@@ -128,6 +173,11 @@ class Color:
     @property
     def wakatake(self) -> str:
         return '#68be8d'
+    
+    @classmethod
+    @property
+    def wakatake_white(self) -> str:
+        return '#C2E0CF'
     
     @classmethod
     @property
