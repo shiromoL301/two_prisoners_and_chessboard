@@ -15,12 +15,16 @@ class ColorTheme:
         accent_color: str,
         square_light_color: str,
         square_dark_color: str,
+        square_light_color_obscured: str,
+        square_dark_color_obscured: str
     ):
         self.__name = name
         self.__accent_color = accent_color
         self.__background_color = background_color
         self.__square_light_color = square_light_color
         self.__square_dark_color = square_dark_color
+        self.__square_light_color_obscured = square_light_color_obscured
+        self.__square_dark_color_obscured = square_dark_color_obscured
         self.__text_color = text_color
         self.__title_color = title_color
         
@@ -52,6 +56,14 @@ class ColorTheme:
     @property
     def square_dark_color(self) -> str:
         return self.__square_dark_color
+
+    @property
+    def square_light_color_obscured(self) -> str:
+        return self.__square_light_color_obscured
+    
+    @property
+    def square_dark_color(self) -> str:
+        return self.__square_dark_color_obscured
     
     @property
     def text_color(self) -> str:
@@ -80,61 +92,71 @@ class ColorTheme:
     @classmethod
     def monochrome(self) -> ColorTheme:
         return ColorTheme(
-            name               = "Monochrome",
-            background_color   = Color.white,
-            square_light_color = Color.lightgray,
-            square_dark_color  = Color.gray,
-            title_color        = Color.black,
-            text_color         = Color.black,
-            accent_color       = Color.darkslategray
+            name                        = "Monochrome",
+            background_color            = Color.white,
+            square_light_color          = Color.lightgray,
+            square_dark_color           = Color.gray,
+            square_light_color_obscured = Color.lightgray_white,
+            square_dark_color_obscured  = Color.gray_white,
+            title_color                 = Color.black,
+            text_color                  = Color.black,
+            accent_color                = Color.darkslategray
         )
     
     @classmethod
     def reddit(self) -> ColorTheme:
         return ColorTheme(
-            name               = "Reddit",
-            background_color   = Color.white,
-            square_light_color = Color.khaki,
-            square_dark_color  = Color.peru,
-            title_color        = Color.midnightblue,
-            text_color         = Color.black,
-            accent_color       = Color.crimson
+            name                        = "Reddit",
+            background_color            = Color.white,
+            square_light_color          = Color.khaki,
+            square_dark_color           = Color.peru,
+            square_light_color_obscured = Color.khaki_white,
+            square_dark_color_obscured  = Color.peru_white,
+            title_color                 = Color.midnightblue,
+            text_color                  = Color.black,
+            accent_color                = Color.crimson
         )
     
     @classmethod
     def seagreen(self) -> ColorTheme:
         return ColorTheme(
-            name               = "Sea Green",
-            background_color   = Color.darkseagreen,
-            square_light_color = Color.lightseagreen,
-            square_dark_color  = Color.seagreen,
-            title_color        = Color.darkslategray,
-            text_color         = Color.black,
-            accent_color       = Color.crimson
+            name                        = "Sea Green",
+            background_color            = Color.darkseagreen,
+            square_light_color          = Color.lightseagreen,
+            square_dark_color           = Color.seagreen,
+            square_light_color_obscured = Color.lightseagreen_white,
+            square_dark_color_obscured  = Color.seagreen_white,
+            title_color                 = Color.darkslategray,
+            text_color                  = Color.black,
+            accent_color                = Color.crimson
         )
     
     @classmethod
     def skyblue(self) -> ColorTheme:
         return ColorTheme(
-            name               = "Sky Blue",
-            background_color   = Color.lightblue,
-            square_light_color = Color.lightskyblue,
-            square_dark_color  = Color.steelblue,
-            title_color        = Color.midnightblue,
-            text_color         = Color.black,
-            accent_color       = Color.crimson
+            name                        = "Sky Blue",
+            background_color            = Color.lightblue,
+            square_light_color          = Color.lightskyblue,
+            square_dark_color           = Color.steelblue,
+            square_light_color_obscured = Color.lightskyblue_white,
+            square_dark_color_obscured  = Color.steelblue_white,
+            title_color                 = Color.midnightblue,
+            text_color                  = Color.black,
+            accent_color                = Color.crimson
         )
         
     @classmethod
     def black_green(self) -> ColorTheme:
         return ColorTheme(
-            name               = "Black Green",
-            background_color   = Color.darkseagreen,
-            square_light_color = Color.wakatake,
-            square_dark_color  = Color.blackstone,
-            title_color        = Color.blackstone,
-            text_color         = Color.jet_black,
-            accent_color       = Color.crimson 
+            name                        = "Black Green",
+            background_color            = Color.darkseagreen,
+            square_light_color          = Color.wakatake,
+            square_dark_color           = Color.blackstone,
+            square_light_color_obscured = Color.wakatake_white,
+            square_dark_color_obscured  = Color.blackstone_white,
+            title_color                 = Color.blackstone,
+            text_color                  = Color.jet_black,
+            accent_color                = Color.crimson 
         )
 
 
