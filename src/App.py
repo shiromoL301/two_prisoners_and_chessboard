@@ -75,7 +75,7 @@ class App:
             [
                 sg.Text(self.text().color_theme, key=Text.COLOR_THEME),
                 sg.Combo(
-                    list(ColorTheme.get_catalog().keys()),
+                    list(ColorTheme.get_catalog(str2enum=True).keys()),
                     default_value="Reddit",
                     key=Key.COLOR_THEME,
                     readonly=True
@@ -84,7 +84,7 @@ class App:
             [
                 sg.Text(self.text().font_theme, key=Text.FONT_THEME),
                 sg.Combo(
-                    list(FontTheme.get_catalog().keys()),
+                    list(FontTheme.get_catalog(str2enum=True).keys()),
                     default_value="Natural",
                     key=Key.FONT_THEME,
                     readonly=True
@@ -181,8 +181,8 @@ class App:
     def create_new_game(self, values):
         self.game_count += 1
         level = int(values[Key.LEVEL])
-        color_theme = ColorTheme.get_catalog()[values[Key.COLOR_THEME]]
-        font_theme = FontTheme.get_catalog()[values[Key.FONT_THEME]]
+        color_theme = ColorTheme.get_catalog(str2enum=True)[values[Key.COLOR_THEME]]
+        font_theme = FontTheme.get_catalog(str2enum=True)[values[Key.FONT_THEME]]
         gui_theme = GuiTheme(color_theme, font_theme)
         language =  [key for key, value in self.language_dict().items() if value == values[Key.LANGUAGE]][0]
         

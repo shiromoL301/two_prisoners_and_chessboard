@@ -62,13 +62,19 @@ class ColorTheme:
         return self.__title_color
     
     @classmethod
-    def get_catalog(self) -> dict[str, ColorTheme]:
+    def get_catalog(self, str2enum: bool=False) -> dict[str, ColorTheme]:
         return {
+            "Black Green": ColorTheme.black_green(),
             "Monochrome": ColorTheme.monochrome(),
             "Reddit": ColorTheme.reddit(),
             "Sea Green": ColorTheme.seagreen(),
-            "Sky Blue": ColorTheme.skyblue(),
-            "Black Green": ColorTheme.black_green()
+            "Sky Blue": ColorTheme.skyblue()
+        } if str2enum else {
+            ColorTheme.black_green(): "Black Green",
+            ColorTheme.monochrome(): "Monochrome",
+            ColorTheme.reddit(): "Reddit",
+            ColorTheme.seagreen(): "Sea Green",
+            ColorTheme.skyblue(): "Sky Blue"
         }
 
     @classmethod
@@ -171,10 +177,13 @@ class FontTheme:
         return self.__title_font
     
     @classmethod
-    def get_catalog(self) -> dict[str, FontTheme]:
+    def get_catalog(self, str2enum: bool=False) -> dict[str, FontTheme]:
         return {
             "Arial": FontTheme.arial(),
             "Natural": FontTheme.natural()
+        } if str2enum else {
+            FontTheme.arial(): "Arial",
+            FontTheme.natural(): "Natural"
         }
      
     @classmethod
