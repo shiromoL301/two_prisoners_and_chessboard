@@ -62,7 +62,7 @@ class ColorTheme:
         return self.__square_light_color_obscured
     
     @property
-    def square_dark_color(self) -> str:
+    def square_dark_color_obscured(self) -> str:
         return self.__square_dark_color_obscured
     
     @property

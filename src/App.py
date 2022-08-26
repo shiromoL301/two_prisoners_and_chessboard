@@ -302,8 +302,7 @@ class App:
                     disabled=False
                 ),
             ]
-        ],
-        background_color='red')
+        ])
     
     def create_log_file(self, values: dict[str, str]) -> tuple[str, int]:
         if not os.path.exists(LOG_ROOT):
