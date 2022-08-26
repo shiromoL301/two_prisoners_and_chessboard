@@ -1,4 +1,6 @@
+import inspect
 from math import floor, log
+import os
 
 def int2nary(number: int, base: int, length: int=0) -> tuple[int]:
     """与えられた整数をn進数へ変換する
@@ -44,3 +46,13 @@ def xor(x_bin: tuple[int], y_bin: tuple[int]) -> tuple[int]:
         tuple[int]: 与えられた2引数の要素ごとの排他的論理和のタプル表現
     """
     return tuple([xi ^ yi for (xi, yi) in zip(x_bin, y_bin)])
+
+
+def get_function_info() -> tuple[str, str, str]:
+    """呼び出した関数のファイル名，関数名，行番号を取得する
+
+    Returns:
+        tuple[str, str, str]: (ファイル名, 関数名, 行番号)
+    """
+    frame = inspect.currentframe().f_back
+    return (os.path.basename(frame.f_code.co_filename), frame.f_code.co_name, frame.f_lineno)
